@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>欧莱雅彩妆大促数据分析 - 数据可视化作业</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* 页面容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 页头 */
+        .header {
+            text-align: center;
+            padding: 24px;
+            background: #ffffff;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        /* 网格布局（核心优化） */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card h2 {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 16px;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+
+        /* 图表容器 */
+        .chart-box {
+            flex: 1;
+            min-height: 300px;
+            position: relative;
+        }
+
+        /* 数据说明 */
+        .note {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #7f8c8d;
+            text-align: center;
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 16px;
+            font-size: 13px;
+            color: #95a5a6;
+        }
+
+        /* 手机端自适应 */
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 页头 -->
+        <div class="header">
+            <h1>欧莱雅彩妆大促营销数据分析</h1>
+            <p>数据可视化课程作业 | 小红书 & 抖音平台内容效果分析</p>
+        </div>
+
+        <!-- 网格布局 -->
+        <div class="grid">
+            <!-- 1 内容贡献度 -->
+            <div class="card">
+                <h2>1. 内容元素贡献度 TOP</h2>
+                <div class="chart-box">
+                    <canvas id="chart1"></canvas>
+                </div>
+                <div class="note">数据来源：XGBoost模型归因分析</div>
+            </div>
+
+            <!-- 2 平台对比 -->
+            <div class="card">
+                <h2>2. 小红书 VS 抖音 效果指标</h2>
+                <div class="chart-box">
+                    <canvas id="chart2"></canvas>
+                </div>
+                <div class="note">CTR、完播率、互动率、曝光对比</div>
+            </div>
+
+            <!-- 3 小红书KOL -->
+            <div class="card">
+                <h2>3. 小红书KOL高贡献元素</h2>
+                <div class="chart-box">
+                    <canvas id="chart3"></canvas>
+                </div>
+            </div>
+
+            <!-- 4 抖音广告形式 -->
+            <div class="card">
+                <h2>4. 抖音投放形式表现占比</h2>
+                <div class="chart-box">
+                    <canvas id="chart4"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <div class="footer">
+            作业提交 | 数据可视化 | 欧莱雅彩妆大促爆款内容流量密码分析
+        </div>
+    </div>
+
+    <script>
+        // 1. 内容贡献度
+        new Chart(document.getElementById('chart1'), {
+            type: 'bar',
+            data: {
+                labels: ['产品展示', '场景适配', '产品卖点', '功效背书', '适用肤质', '效果时长', '成分', '销量'],
+                datasets: [{
+                    label: '贡献指数',
+                    data: [70.9, 63.7, 56.2, 15.5, 26.2, 6.4, 4.5, 4.9],
+                    backgroundColor: '#3498db',
+                    borderRadius: 6
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        // 2. 平台雷达图
+        new Chart(document.getElementById('chart2'), {
+            type: 'radar',
+            data: {
+                labels: ['CTR', '完播率', '互动率', '粉丝粘性', '曝光量'],
+                datasets: [
+                    { label: '小红书', data: [85, 50, 95, 90, 60], borderColor: '#e84393', backgroundColor: 'rgba(232,67,147,0.1)' },
+                    { label: '抖音', data: [90, 85, 70, 55, 95], borderColor: '#3498db', backgroundColor: 'rgba(52,152,219,0.1)' }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        // 3. 小红书KOL
+        new Chart(document.getElementById('chart3'), {
+            type: 'polarArea',
+            data: {
+                labels: ['单品类测评', 'T5达人', '产品卖点', '妆效风格', '一物多用'],
+                datasets: [{
+                    data: [141.6, 79.7, 223.2, 143.9, 88],
+                    backgroundColor: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6']
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        // 4. 抖音投放
+        new Chart(document.getElementById('chart4'), {
+            type: 'doughnut',
+            data: {
+                labels: ['TopView 明星', '内容热推', '千川投放'],
+                datasets: [{
+                    data: [32, 38, 40],
+                    backgroundColor: ['#3498db', '#2ecc71', '#f39c12']
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+    </script>
+</body>
+</html>
